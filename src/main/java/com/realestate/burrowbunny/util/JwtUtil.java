@@ -1,4 +1,4 @@
-package com.realestate.burrowbunny.jwt;
+package com.realestate.burrowbunny.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

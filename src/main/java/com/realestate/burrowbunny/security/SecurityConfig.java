@@ -1,4 +1,4 @@
-package com.realestate.burrowbunny.config;
+package com.realestate.burrowbunny.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,18 +16,17 @@ public class SecurityConfig {
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder =
                 http.getSharedObject(AuthenticationManagerBuilder.class);
-        // Configure your user details service or authentication provider here
         authenticationManagerBuilder.inMemoryAuthentication()
-                .withUser("user").password("{noop}password").roles("USER"); // Example user for testing
+                .withUser("user").password("{noop}password").roles("USER");
         return authenticationManagerBuilder.build();
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable() // Disable CSRF for testing purposes; consider enabling it in production
+        http.csrf().disable()
                 .authorizeRequests()
-                .requestMatchers("/auth/**").permitAll() // Allow access to authentication endpoints
-                .anyRequest().authenticated(); // Require authentication for other requests
+                .requestMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated();
         return http.build();
     }
 }

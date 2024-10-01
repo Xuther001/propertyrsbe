@@ -1,5 +1,6 @@
-package com.realestate.burrowbunny.jwt;
+package com.realestate.burrowbunny.security;
 
+import com.realestate.burrowbunny.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,7 +39,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtUtil.extractUsername(jwt);
             } catch (ExpiredJwtException e) {
-                // Handle exception
             }
         }
 

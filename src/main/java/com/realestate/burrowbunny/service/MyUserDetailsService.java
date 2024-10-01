@@ -1,4 +1,4 @@
-package com.realestate.burrowbunny.jwt;
+package com.realestate.burrowbunny.service;
 
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

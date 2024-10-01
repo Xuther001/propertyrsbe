@@ -1,4 +1,4 @@
-package com.realestate.burrowbunny.jwt;
+package com.realestate.burrowbunny.dto;
 
 public class AuthenticationResponse {
     private String username;
@@ -8,6 +8,4 @@ public class AuthenticationResponse {
         this.username = username;
         this.jwt = jwt;
     }
-
-    // Getters and Setters
 }
