@@ -1,0 +1,16 @@
+{
+    "name": "burrowbunny",
+    "version": "1.0.0",
+    "type": "module",
+    "main": "app.mjs",
+    "scripts": {
+      "start": "node app.mjs"
+    },
+    "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "sequelize": "^6.37.3",
+    "pg": "^8.10.0"
+    }
+}
+  
