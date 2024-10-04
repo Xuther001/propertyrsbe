@@ -1,20 +1,20 @@
 import express from 'express';
-import { Listing } from '../models/index.js'; // Import the Listing model
-import { authenticateToken } from '../middleware/auth.js'; // Import authentication middleware
+import models from '../index.js';
+import { authenticateToken } from '../middleware/auth.js';
 
+const { Listing } = models;
 const router = express.Router();
 
-// Create a new listing
 router.post('/', authenticateToken, async (req, res) => {
   try {
-    const { title, description, price, property_id, user_id } = req.body;
+    const { price, is_for_sale, description, available_from, property_id } = req.body;
 
     const newListing = await Listing.create({
-      title,
-      description,
       price,
+      is_for_sale,
+      description,
+      available_from,
       property_id,
-      user_id,
     });
 
     res.status(201).json(newListing);
@@ -51,7 +51,7 @@ router.get('/:id', async (req, res) => {
 
 router.put('/:id', authenticateToken, async (req, res) => {
   try {
-    const { title, description, price } = req.body;
+    const { price, is_for_sale, description, available_from } = req.body;
 
     const listing = await Listing.findByPk(req.params.id);
 
@@ -59,9 +59,10 @@ router.put('/:id', authenticateToken, async (req, res) => {
       return res.status(404).json({ message: 'Listing not found' });
     }
 
-    listing.title = title || listing.title;
-    listing.description = description || listing.description;
-    listing.price = price || listing.price;
+    listing.price = price !== undefined ? price : listing.price;
+    listing.is_for_sale = is_for_sale !== undefined ? is_for_sale : listing.is_for_sale;
+    listing.description = description !== undefined ? description : listing.description;
+    listing.available_from = available_from !== undefined ? available_from : listing.available_from;
 
     await listing.save();
 

@@ -1,5 +1,5 @@
 import sequelize from '../burrowbunny/config/db.js';
-import initUserModel from './models//User.js';
+import initUserModel from './models/User.js';
 import initFavoriteModel from './models/Favorite.js';
 import initListingModel from './models/Listing.js';
 import initPropertyModel from './models/Property.js';
