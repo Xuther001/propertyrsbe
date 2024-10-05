@@ -40,7 +40,6 @@ router.get('/', authenticateToken, async (req, res) => {
   }
 });
 
-// Delete a favorite
 router.delete('/:id', authenticateToken, async (req, res) => {
   try {
     const favorite = await Favorite.findByPk(req.params.id);
