@@ -1,11 +1,13 @@
 import models from '../index.js';
+import { generateToken } from '../util/JwtUtil.js';
 
 const { User } = models;
 
 const createUser = async (userData) => {
     try {
         const newUser = await User.create(userData);
-        return newUser;
+        const token = generateToken(newUser);
+        return { user: newUser, token };
     } catch (error) {
         throw new Error('Error creating user: ' + error.message);
     }

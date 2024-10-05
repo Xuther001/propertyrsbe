@@ -22,7 +22,7 @@ export const getAllUsers = async (req, res) => {
 };
 
 export const getUserById = async (req, res) => {
-    const userId = req.params.id; // Get userId from request parameters
+    const userId = req.params.id;
     try {
         const user = await UserService.getUserById(userId);
         if (!user) {
@@ -35,22 +35,31 @@ export const getUserById = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-    const userId = req.params.id; // Get userId from request parameters
-    const updateData = req.body;   // Get update data from request body
+    const userId = req.params.id; // The ID from the route
+    const updateData = req.body; // The data to update
+
+    console.log('User ID from token:', req.user.user_id);
+    console.log('User ID from request:', userId);
+
+    // Check if the user ID from the token matches the requested user ID
+    if (String(req.user.user_id) !== String(userId)) {
+        return res.status(403).json({ message: 'You can only update your own user information' });
+    }
+
     try {
         const updatedUser = await UserService.updateUser(userId, updateData);
         if (!updatedUser) {
             return res.status(404).json({ message: 'User not found' });
         }
-        return res.status(200).json(updatedUser);
+        return res.status(200).json({ message: 'User updated successfully', user: updatedUser });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 };
 
 export const patchUser = async (req, res) => {
-    const userId = req.params.id; // Get userId from request parameters
-    const patchData = req.body;    // Get patch data from request body
+    const userId = req.params.id;
+    const patchData = req.body;
     try {
         const patchedUser = await UserService.patchUser(userId, patchData);
         if (!patchedUser) {
@@ -63,14 +72,16 @@ export const patchUser = async (req, res) => {
 };
 
 export const deleteUser = async (req, res) => {
-    const userId = req.params.id; // Get userId from request parameters
+    const userId = req.params.id;
     try {
         const deleted = await UserService.deleteUser(userId);
         if (!deleted) {
             return res.status(404).json({ message: 'User not found' });
         }
-        return res.status(204).send(); // No content to send back
+        return res.status(204).send();
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 };
+
+export default { registerUser, getAllUsers, getUserById, updateUser, patchUser, deleteUser };
