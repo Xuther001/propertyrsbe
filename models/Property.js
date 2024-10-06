@@ -61,14 +61,21 @@ export default (sequelize) => {
   });
 
   Property.associate = (models) => {
-    // A Property belongs to many Users through user_properties
     Property.belongsToMany(models.User, {
-      through: 'user_properties',  // Specify the join table
+      through: 'user_properties',
       foreignKey: 'property_id',
       otherKey: 'user_id',
     });
 
-    // Other associations
+    Property.hasMany(models.Review, {
+      foreignKey: 'property_id',
+      onDelete: 'CASCADE',
+    });
+  
+    Property.hasMany(models.Listing, {
+      foreignKey: 'property_id',
+      onDelete: 'CASCADE',
+    });
   };
 
   return Property;

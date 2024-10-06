@@ -39,14 +39,14 @@ export default (sequelize) => {
   });
 
   User.associate = (models) => {
-    // A User belongs to many Properties through user_properties
     User.belongsToMany(models.Property, {
-      through: 'user_properties',  // Specify the join table
+      through: 'user_properties',
       foreignKey: 'user_id',
       otherKey: 'property_id',
     });
 
-    // Other associations
+    User.hasMany(models.Review, { foreignKey: 'user_id' });
+    User.hasMany(models.Favorite, { foreignKey: 'user_id' });
   };
 
   return User;
