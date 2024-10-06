@@ -1,30 +1,35 @@
+// models/Favorite.js
 import { DataTypes } from 'sequelize';
 
 export default (sequelize) => {
   const Favorite = sequelize.define('Favorite', {
-    favorite_id: {
+    user_id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      primaryKey: true
+      references: {
+        model: 'users', // Adjust this if your User table name is different
+        key: 'user_id',
+      },
+      primaryKey: true,
     },
-    created_at: {
-      type: DataTypes.DATE,
+    property_id: {
+      type: DataTypes.UUID,
       allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
+      references: {
+        model: 'properties', // Ensure this matches the Property table name
+        key: 'property_id',
+      },
+      primaryKey: true,
     },
   }, {
-    timestamps: true,
-    underscored: true,
+    timestamps: false,
     tableName: 'favorites',
   });
 
-  // No need for associations since this is a join table
+  Favorite.associate = (models) => {
+    Favorite.belongsTo(models.User, { foreignKey: 'user_id' });
+    Favorite.belongsTo(models.Property, { foreignKey: 'property_id' });
+  };
 
   return Favorite;
 };

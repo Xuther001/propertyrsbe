@@ -1,3 +1,4 @@
+// models/Review.js
 import { DataTypes } from 'sequelize';
 
 export default (sequelize) => {
@@ -6,29 +7,15 @@ export default (sequelize) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
     },
     rating: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate: {
-        min: 1,
-        max: 5
-      }
     },
     comment: {
       type: DataTypes.TEXT,
       allowNull: true,
-    },
-    created_at: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
     },
   }, {
     timestamps: true,
@@ -37,13 +24,10 @@ export default (sequelize) => {
   });
 
   Review.associate = (models) => {
-    // A Review belongs to one user
     Review.belongsTo(models.User, {
       foreignKey: 'user_id',
       as: 'user',
     });
-
-    // A Review belongs to one property
     Review.belongsTo(models.Property, {
       foreignKey: 'property_id',
       as: 'property',

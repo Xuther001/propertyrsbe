@@ -13,41 +13,14 @@ export default (sequelize) => {
       allowNull: false,
       unique: true,
     },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
-      validate: {
-        isEmail: true,
-      },
-    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    first_name: {
+    email: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    last_name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    phone_number: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        is: /^[0-9\-]+$/,
-      },
-    },
-    role: {
-      type: DataTypes.ENUM('admin', 'owner', 'user'),
-      defaultValue: 'user',
-      allowNull: false,
-    },
-    profile_picture: {
-      type: DataTypes.STRING,
-      allowNull: true,
+      unique: true,
     },
     created_at: {
       type: DataTypes.DATE,
@@ -66,24 +39,14 @@ export default (sequelize) => {
   });
 
   User.associate = (models) => {
-    // One-to-Many: A User can own multiple properties
-    User.hasMany(models.Property, {
-      foreignKey: 'owner_id',
-      as: 'properties',
-    });
-
-    // One-to-Many: A User can leave multiple reviews
-    User.hasMany(models.Review, {
-      foreignKey: 'user_id',
-      as: 'reviews',
-    });
-
-    // Many-to-Many: Users can favorite multiple properties
+    // A User belongs to many Properties through user_properties
     User.belongsToMany(models.Property, {
-      through: models.Favorite,
+      through: 'user_properties',  // Specify the join table
       foreignKey: 'user_id',
-      as: 'favorite_properties',
+      otherKey: 'property_id',
     });
+
+    // Other associations
   };
 
   return User;

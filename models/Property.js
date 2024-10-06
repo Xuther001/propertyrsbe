@@ -29,7 +29,7 @@ export default (sequelize) => {
       allowNull: false,
     },
     property_type: {
-      type: DataTypes.ENUM('house', 'apartment', 'condo', 'land', 'commercial'),
+      type: DataTypes.STRING,
       allowNull: false,
     },
     bedrooms: {
@@ -41,7 +41,7 @@ export default (sequelize) => {
       allowNull: false,
     },
     area: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
     created_at: {
@@ -61,24 +61,14 @@ export default (sequelize) => {
   });
 
   Property.associate = (models) => {
-    // One-to-Many: A property can have multiple listings
-    Property.hasMany(models.Listing, {
-      foreignKey: 'property_id',
-      as: 'listings',
-    });
-
-    // One-to-Many: A property can have multiple reviews
-    Property.hasMany(models.Review, {
-      foreignKey: 'property_id',
-      as: 'reviews',
-    });
-
-    // Many-to-Many: Properties can be favorited by multiple users
+    // A Property belongs to many Users through user_properties
     Property.belongsToMany(models.User, {
-      through: models.Favorite,
+      through: 'user_properties',  // Specify the join table
       foreignKey: 'property_id',
-      as: 'favorited_by',
+      otherKey: 'user_id',
     });
+
+    // Other associations
   };
 
   return Property;

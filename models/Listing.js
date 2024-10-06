@@ -1,3 +1,4 @@
+// models/Listing.js
 import { DataTypes } from 'sequelize';
 
 export default (sequelize) => {
@@ -6,7 +7,7 @@ export default (sequelize) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
     },
     price: {
       type: DataTypes.DECIMAL(10, 2),
@@ -24,16 +25,6 @@ export default (sequelize) => {
       type: DataTypes.DATE,
       allowNull: false,
     },
-    created_at: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
-    updated_at: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
   }, {
     timestamps: true,
     underscored: true,
@@ -41,7 +32,6 @@ export default (sequelize) => {
   });
 
   Listing.associate = (models) => {
-    // A Listing belongs to one property
     Listing.belongsTo(models.Property, {
       foreignKey: 'property_id',
       as: 'property',

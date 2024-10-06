@@ -4,6 +4,8 @@ import sequelize from './config/db.js';
 import models from './index.js';
 import userRoutes from './routes/userRoutes.js';
 import listingRoutes from './routes/listingRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js';
+import propertyRoutes from './routes/propertyRoutes.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -24,7 +26,9 @@ sequelize.sync()
   });
 
 app.use('/api/users', userRoutes);
-app.use('/api/listing', listingRoutes)
+app.use('/api/reviews', reviewRoutes);
+app.use('/api/listing', listingRoutes);
+app.use('/api/property', propertyRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
