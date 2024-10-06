@@ -35,13 +35,9 @@ export const getUserById = async (req, res) => {
 };
 
 export const updateUser = async (req, res) => {
-    const userId = req.params.id; // The ID from the route
-    const updateData = req.body; // The data to update
+    const userId = req.params.id;
+    const updateData = req.body;
 
-    console.log('User ID from token:', req.user.user_id);
-    console.log('User ID from request:', userId);
-
-    // Check if the user ID from the token matches the requested user ID
     if (String(req.user.user_id) !== String(userId)) {
         return res.status(403).json({ message: 'You can only update your own user information' });
     }
@@ -60,6 +56,11 @@ export const updateUser = async (req, res) => {
 export const patchUser = async (req, res) => {
     const userId = req.params.id;
     const patchData = req.body;
+
+    if (String(req.user.user_id) !== String(userId)) {
+        return res.status(403).json({ message: 'You can only update your own user information' });
+    }
+
     try {
         const patchedUser = await UserService.patchUser(userId, patchData);
         if (!patchedUser) {
@@ -73,6 +74,11 @@ export const patchUser = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
     const userId = req.params.id;
+
+    if (String(req.user.user_id) !== String(userId)) {
+        return res.status(403).json({ message: 'You can only update your own user information' });
+    }
+
     try {
         const deleted = await UserService.deleteUser(userId);
         if (!deleted) {
