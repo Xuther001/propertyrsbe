@@ -23,7 +23,6 @@ export const getReviewById = async (userId, reviewId) => {
 
 export const createReview = async (userId, reviewData) => {
     try {
-        // Ensure the userId matches with reviewData's user_id
         if (String(userId) !== String(reviewData.user_id)) {
             throw new Error('You can only create reviews with your own user ID');
         }

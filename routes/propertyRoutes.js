@@ -1,8 +1,6 @@
 import express from 'express';
 import { authenticateToken } from '../middleware/auth.js';
-import PropertyService from '../service/PropertyService.js';
-
-const { createProperty, getPropertyById, getPropertyByIdAdmin, getAllProperties, editProperty, deleteProperty } = PropertyService;
+import { createProperty, getAllProperties, getPropertyById, updateProperty, deleteProperty } from '../controllers/PropertyController.js';
 
 const router = express.Router();
 
@@ -12,7 +10,7 @@ router.get('/', getAllProperties); //works
 
 router.get('/:propertyId', authenticateToken, getPropertyById);
 
-router.put('/:propertyId', authenticateToken, editProperty);
+router.put('/:propertyId', authenticateToken, updateProperty);
 
 router.delete('/:propertyId', authenticateToken, deleteProperty);
 
