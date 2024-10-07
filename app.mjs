@@ -17,7 +17,7 @@ app.use(express.json());
 
 const { User } = models;
 
-sequelize.sync()
+sequelize.sync({ alter: true })
   .then(() => {
     console.log('Tables created successfully!');
   })

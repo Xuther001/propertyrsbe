@@ -1,4 +1,5 @@
 import { DataTypes } from 'sequelize';
+import UserProperty from './UserProperty.js';
 
 export default (sequelize) => {
   const User = sequelize.define('User', {
@@ -6,7 +7,7 @@ export default (sequelize) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false,
-      primaryKey: true
+      primaryKey: true,
     },
     username: {
       type: DataTypes.STRING,
@@ -40,9 +41,10 @@ export default (sequelize) => {
 
   User.associate = (models) => {
     User.belongsToMany(models.Property, {
-      through: 'user_properties',
+      through: UserProperty, // Use imported UserProperty model here
       foreignKey: 'user_id',
       otherKey: 'property_id',
+      onDelete: 'CASCADE',
     });
 
     User.hasMany(models.Review, { foreignKey: 'user_id' });

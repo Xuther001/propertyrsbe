@@ -8,7 +8,7 @@ const UserProperty = sequelize.define('UserProperty', {
         references: {
             model: 'users',
             key: 'user_id',
-        }
+        },
     },
     property_id: {
         type: DataTypes.UUID,
@@ -16,13 +16,13 @@ const UserProperty = sequelize.define('UserProperty', {
         references: {
             model: 'properties',
             key: 'property_id',
-        }
+        },
     },
 }, {
     tableName: 'user_properties',
     timestamps: true,
-    createdAt: 'created_at', //specify a specific name for the table
-    updatedAt: 'updated_at', //specify a specific name for the table
+    createdAt: 'created_at',
+    updatedAt: 'updated_at',
 });
 
 export default UserProperty;

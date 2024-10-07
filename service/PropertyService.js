@@ -1,15 +1,25 @@
 import models from '../index.js';
 import UserProperty from '../models/UserProperty.js';
 
-const { Property } = models;
+const { User, Property } = models;
 
 const createProperty = async (req, res) => {
     const propertyData = req.body; 
     const userId = req.user.user_id; 
 
     try {
-        const newProperty = await Property.create({ ...propertyData, user_id: userId });
-        await newProperty.addUser(userId); //***This creates an entry in user_properties table***
+        // Create the new property
+        const newProperty = await Property.create(propertyData); 
+
+        // Add the user to the property using the User model's method
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Associate the user with the new property
+        await newProperty.addUser(user); // This should work if associations are set up correctly
+
         return res.status(201).json({ property: newProperty });
     } catch (error) {
         return res.status(500).json({ message: 'Failed to create property: ' + error.message });
@@ -94,6 +104,32 @@ const editProperty = async (req, res) => {
     }
 };
 
-export default { createProperty, getAllProperties, getPropertyById, getPropertyByIdAdmin, editProperty };
+const deleteProperty = async (req, res) => {
+    try {
+        const userId = req.user.user_id;
+        const propertyId = req.params.propertyId;
 
-//delete property
+        const userProperty = await UserProperty.findOne({
+            where: { user_id: userId, property_id: propertyId }
+        });
+
+        if (!userProperty) {
+            return res.status(404).json({ message: 'You do not have permission to delete this property or it does not exist.' });
+        }
+
+        const property = await Property.findOne({ where: { property_id: propertyId } });
+
+        if (!property) {
+            return res.status(404).json({ message: 'Property not found.' });
+        }
+
+        await property.destroy();
+
+        return res.status(200).json({ message: 'Property deleted successfully.' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Failed to delete property with id ' + req.params.propertyId + ': ' + error.message });
+    }
+};
+
+
+export default { createProperty, getAllProperties, getPropertyById, getPropertyByIdAdmin, editProperty, deleteProperty };

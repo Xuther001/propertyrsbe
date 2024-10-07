@@ -7,7 +7,7 @@ export default (sequelize) => {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: 'users', // Adjust this if your User table name is different
+        model: 'users',
         key: 'user_id',
       },
       primaryKey: true,
@@ -16,7 +16,7 @@ export default (sequelize) => {
       type: DataTypes.UUID,
       allowNull: false,
       references: {
-        model: 'properties', // Ensure this matches the Property table name
+        model: 'properties',
         key: 'property_id',
       },
       primaryKey: true,
