@@ -4,10 +4,10 @@ export default (sequelize) => {
   const Property = sequelize.define('Property', {
     property_id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
       allowNull: false,
-      primaryKey: true
-    },
+      defaultValue: DataTypes.UUIDV4
+  },
     address: {
       type: DataTypes.STRING,
       allowNull: false,
