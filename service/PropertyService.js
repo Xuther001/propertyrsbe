@@ -51,7 +51,7 @@ const getPropertyById = async (req, res) => {
 
         const property = await Property.findOne({
             where: {
-                property_id: propertyId // Ensure to query using the correct primary key
+                property_id: propertyId
             }
         });
 
@@ -65,8 +65,35 @@ const getPropertyById = async (req, res) => {
     }
 };
 
+const editProperty = async (req, res) => {
+    try {
+        const userId = req.user.user_id;
+        const propertyId = req.params.propertyId;
 
-export default { createProperty, getAllProperties, getPropertyById, getPropertyByIdAdmin };
+        // Check if the user is associated with the property in the user_properties table
+        const userProperty = await UserProperty.findOne({
+            where: { user_id: userId, property_id: propertyId }
+        });
+
+        if (!userProperty) {
+            return res.status(404).json({ message: 'You do not have permission to edit this property or it does not exist.' });
+        }
+
+        const updatedData = req.body;
+        const property = await Property.findOne({ where: { property_id: propertyId } });
+
+        if (!property) {
+            return res.status(404).json({ message: 'Property not found.' });
+        }
+
+        await property.update(updatedData);
+
+        return res.status(200).json({ message: 'Property updated successfully', property });
+    } catch (error) {
+        return res.status(500).json({ message: 'Failed to edit property with id ' + req.params.propertyId + ': ' + error.message });
+    }
+};
+
+export default { createProperty, getAllProperties, getPropertyById, getPropertyByIdAdmin, editProperty };
 
 //delete property
-//edit property
