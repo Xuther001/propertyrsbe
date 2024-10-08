@@ -1,27 +1,42 @@
 import models from '../index.js';
-import { authenticateToken } from '../middleware/auth.js';
 
 const { Review } = models;
 
-const createReview = async (userId, reviewData) => {
+const createReview = async (req, res) => {
     try {
-        // if userId matches with reviewData's userId then save if not message that user can only review with their id
-        const review = await Review.create(reviewData);
-        return { review: review };
+        const { userId, ...reviewData } = req.body;
+
+        if (!String(req.user.user_id) == String(userId)) {
+            return res.status(403).json({ message: 'You can only create a review using your own user ID' });
+        }
+
+        const review = await Review.create({ ...reviewData, userId });
+        return res.status(201).json({ review });
     } catch (error) {
-        throw new Error('Error creating user: ' + error.message);
+        return res.status(500).json({ message: 'Error creating review: ' + error.message });
     }
 };
 
-const editReview = async (userId, reviewId, editReviewData) => {
+const editReview = async (req, res) => {
     try {
+        const { reviewId, ...editReviewData } = req.body;
+        const userId = req.user.user_id;
 
-        //add logic to check userId with database's review's userId
-        //if the above matches then edit the review
-        const editReview = await Review.update(editReviewData);
-        return { review: editReview };
+        const existingReview = await Review.findOne({ where: { id: reviewId } });
+
+        if (!existingReview) {
+            return res.status(404).json({ message: 'Review not found' });
+        }
+        if (String(existingReview.user_id) !== String(userId)) {
+            return res.status(403).json({ message: 'You can only edit your own reviews' });
+        }
+
+        await Review.update(editReviewData, { where: { id: reviewId } });
+
+        const updatedReview = await Review.findOne({ where: { id: reviewId } });
+        return res.status(200).json({ review: updatedReview });
     } catch (error) {
-        throw new Error('Error creating user: ' + error.message);
+        return res.status(500).json({ message: 'Error editing review: ' + error.message });
     }
 }
 

@@ -21,16 +21,13 @@ export const getReviewById = async (userId, reviewId) => {
     }
 }
 
-export const createReview = async (userId, reviewData) => {
+export const createReview = async (req, res) => {
     try {
-        if (String(userId) !== String(reviewData.user_id)) {
-            throw new Error('You can only create reviews with your own user ID');
-        }
-
-        const review = await Review.create(reviewData);
-        return { review };
+        const { userId, ...reviewData } = req.body;
+        const review = await Review.create({ ...reviewData, userId });
+        return res.status(201).json({ review });
     } catch (error) {
-        throw new Error('Error creating review: ' + error.message);
+        return res.status(500).json({ message: 'Error creating review: ' + error.message });
     }
 };
 
