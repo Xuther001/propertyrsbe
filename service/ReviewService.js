@@ -4,13 +4,16 @@ const { Review } = models;
 
 const createReview = async (req, res) => {
     try {
-        const { userId, ...reviewData } = req.body;
 
-        if (!String(req.user.user_id) == String(userId)) {
+        const { user_id } = req.body;
+        const reviewData = req.body;
+
+        if (String(req.user.user_id) !== String(user_id)) {
             return res.status(403).json({ message: 'You can only create a review using your own user ID' });
         }
 
-        const review = await Review.create({ ...reviewData, userId });
+        const review = await Review.create(reviewData);
+
         return res.status(201).json({ review });
     } catch (error) {
         return res.status(500).json({ message: 'Error creating review: ' + error.message });
@@ -40,10 +43,9 @@ const editReview = async (req, res) => {
     }
 }
 
-const deleteReview = async (userId, reviewId) => {
+const deleteReview = async (req, res) => {
     try {
-
-        //check token to see if request userId param matches with userId in token
+        const reviewId = req.params;
         const review = await Review.findByPk(reviewId);
         await user.destroy();
         return true;

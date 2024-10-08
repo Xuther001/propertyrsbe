@@ -4,13 +4,13 @@ import { getAllReview, getReviewById, createReview, editReview, deleteReview } f
 
 const router = express.Router();
 
-router.post('/', authenticateToken, createReview);
+router.post('/', authenticateToken, createReview); //done
 
 router.get('/', getAllReview);
 
 router.get('/:id', getReviewById);
 
-router.put('/:id', editReview);
+router.put('/:id', editReview); //done
 
 router.delete('/:id', deleteReview);
 

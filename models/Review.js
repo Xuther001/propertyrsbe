@@ -17,6 +17,22 @@ export default (sequelize) => {
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    user_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'users',
+        key: 'user_id',
+      },
+    },
+    property_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references: {
+        model: 'properties',
+        key: 'property_id',
+      },
+    },
   }, {
     timestamps: true,
     underscored: true,
