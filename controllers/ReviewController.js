@@ -58,12 +58,14 @@ export const editReview = async (req, res) => {
     }
 };
 
-export const deleteReview = async (userId, reviewId) => {
+export const deleteReview = async (req, res) => {
     try {
-        const deleted = await ReviewService.deleteReview(reviewId);
-        if (!deleted) {
+        console.log(req.user.user_id);
+        const ownership = await Review.findOne({where: { user_id: req.user.user_id, property_id: req.body.property_id }});
+        if (!ownership) {
             return res.status(404).json({ message: 'Review not found' });
         }
+        await ReviewService.deleteReview(ownership.review_id);
         return res.status(204).send();
     } catch (error) {
         return res.status(500).json({ message: error.message });

@@ -14,6 +14,6 @@ router.post('/', authenticateToken, createReview);
 
 router.put('/:id', editReview); //done
 
-router.delete('/:id', deleteReview);
+router.delete('/:id', authenticateToken, deleteReview);
 
 export default router;

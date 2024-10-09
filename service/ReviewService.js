@@ -36,12 +36,10 @@ export const editReview = async (req, res) => {
     }
 }
 
-export const deleteReview = async (req, res) => {
+export const deleteReview = async (reviewId) => {
     try {
-        const reviewId = req.params;
-        const review = await Review.findByPk(reviewId);
-        await User.destroy();
-        return true;
+        await Review.destroy({where: { review_id: reviewId}});
+        return "Review with id " + reviewId + " deleted";
     } catch (error) {
         throw new Error('Error deleting review: ' + error.message);
     }
