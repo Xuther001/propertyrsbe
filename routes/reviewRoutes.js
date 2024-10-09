@@ -12,8 +12,8 @@ router.post('/', authenticateToken, createReview);
 
 // router.get('/:id', getReviewById);
 
-router.put('/:id', editReview); //done
+router.put('/', authenticateToken, editReview); //done
 
-router.delete('/:id', authenticateToken, deleteReview);
+router.delete('/', authenticateToken, deleteReview);
 
 export default router;

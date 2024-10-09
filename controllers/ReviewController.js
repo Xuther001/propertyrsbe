@@ -24,9 +24,6 @@ export const getReviewById = async (userId, reviewId) => {
 export const createReview = async (req, res) => {
     try{
         const { user_id, property_id, ...reviewData } = req.body;
-
-        console.log("*******" + req.body);
-
         const property = await Property.findByPk(property_id);
         const user = await User.findByPk(user_id);
 
@@ -51,8 +48,11 @@ export const createReview = async (req, res) => {
 
 export const editReview = async (req, res) => {
     try {
+        if (String(req.user.user_id) != String(req.body.user_id)) {
+            return res.status(403).json({ message: 'You can only edit your own review' });
+        }
         const editReview = await ReviewService.editReview(req.body);
-        return res.status(201).json({ message: 'Review created successfully', review: newReview });
+        return res.status(200).json({ message: editReview });
     } catch {
         return res.status(500).json({ message: error.message });
     }
@@ -60,13 +60,12 @@ export const editReview = async (req, res) => {
 
 export const deleteReview = async (req, res) => {
     try {
-        console.log(req.user.user_id);
-        const ownership = await Review.findOne({where: { user_id: req.user.user_id, property_id: req.body.property_id }});
-        if (!ownership) {
+        const review = await Review.findOne({where: { user_id: req.user.user_id, property_id: req.body.property_id }});
+        if (!review) {
             return res.status(404).json({ message: 'Review not found' });
         }
-        await ReviewService.deleteReview(ownership.review_id);
-        return res.status(204).send();
+        await ReviewService.deleteReview(review.review_id);
+        return res.status(200).json({ message: review})
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
