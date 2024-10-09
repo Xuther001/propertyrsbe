@@ -22,7 +22,7 @@ export const createUser = async (req, res) => {
         if (existingEmail) {
             return res.status(400).json({ message: 'Email is already in use' });
         }
-        
+
         const { user, token } = await UserService.createUser(req.body);
         return res.status(201).json({ message: 'User created successfully', user, token });
     } catch (error) {
@@ -94,15 +94,16 @@ export const deleteUser = async (req, res) => {
     const userId = req.params.id;
 
     if (String(req.user.user_id) !== String(userId)) {
-        return res.status(403).json({ message: 'You can only update your own user information' });
+        return res.status(403).json({ message: 'You can only delete your own account' });
     }
 
     try {
-        const deleted = await UserService.deleteUser(userId);
-        if (!deleted) {
+        const user = await UserService.getUserById(userId);
+        if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        return res.status(204).send();
+        await UserService.deleteUser(userId);
+        return res.status(200).json(`User ${user.username} deleted`);
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }

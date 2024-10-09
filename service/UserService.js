@@ -26,7 +26,9 @@ const getAllUsers = async () => {
 
 const getUserById = async (userId) => {
     try {
-        const user = await User.findByPk(userId);
+        const user = await User.findByPk(userId, {
+            attributes: ['username', 'email']
+        });
         return user;
     } catch (error) {
         throw new Error('Error fetching user by ID: ' + error.message);
@@ -66,7 +68,6 @@ const deleteUser = async (userId) => {
             return null;
         }
         await user.destroy();
-        return true;
     } catch (error) {
         throw new Error('Error deleting user: ' + error.message);
     }
