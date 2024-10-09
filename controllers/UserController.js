@@ -3,10 +3,28 @@ import UserService from '../service/UserService.js';
 
 const { User } = models;
 
-export const registerUser = async (req, res) => {
+export const createUser = async (req, res) => {
     try {
-        const newUser = await UserService.createUser(req.body);
-        return res.status(201).json({ message: 'User created successfully', user: newUser });
+        const { username, email } = req.body;
+
+        const existingUsername = await User.findOne({
+            where: { username }
+        });
+
+        if (existingUsername) {
+            return res.status(400).json({ message: 'Username is already taken' });
+        }
+
+        const existingEmail = await User.findOne({
+            where: { email }
+        });
+
+        if (existingEmail) {
+            return res.status(400).json({ message: 'Email is already in use' });
+        }
+        
+        const { user, token } = await UserService.createUser(req.body);
+        return res.status(201).json({ message: 'User created successfully', user, token });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -90,4 +108,4 @@ export const deleteUser = async (req, res) => {
     }
 };
 
-export default { registerUser, getAllUsers, getUserById, updateUser, patchUser, deleteUser };
+export default { createUser, getAllUsers, getUserById, updateUser, patchUser, deleteUser };

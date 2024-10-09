@@ -1,16 +1,16 @@
 import express from 'express';
-import { getAllUsers, getUserById, registerUser, deleteUser, updateUser, patchUser } from '../controllers/UserController.js';
+import { getAllUsers, getUserById, createUser, deleteUser, updateUser, patchUser } from '../controllers/UserController.js';
 import { authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
-router.post('/register', registerUser);
+router.post('/register', createUser);
 router.get('/getallusers', authenticateToken, getAllUsers);
 router.get('/:id', authenticateToken, getUserById);
 router.delete('/:id', authenticateToken, deleteUser);
-router.put('/:id', authenticateToken, updateUser); //update checks for user updating their own info done
+router.put('/:id', authenticateToken, updateUser);
 router.patch('/:id', authenticateToken, patchUser);
-// router.post('/login', ) //will be in auth
+// router.post('/login', )
 
 
 export default router;
