@@ -15,7 +15,9 @@ const createUser = async (userData) => {
 
 const getAllUsers = async () => {
     try {
-        const users = await User.findAll();
+        const users = await User.findAll({ 
+            attributes: ['username', 'email']
+        });
         return users;
     } catch (error) {
         throw new Error('Error fetching users: ' + error.message);
