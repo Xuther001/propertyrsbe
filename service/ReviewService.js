@@ -1,26 +1,19 @@
 import models from '../index.js';
 
-const { Review } = models;
+const { Review, User, Property } = models;
 
-const createReview = async (req, res) => {
+export const createReview = async (reviewData) => {
     try {
-
-        const { user_id } = req.body;
-        const reviewData = req.body;
-
-        if (String(req.user.user_id) !== String(user_id)) {
-            return res.status(403).json({ message: 'You can only create a review using your own user ID' });
-        }
-
         const review = await Review.create(reviewData);
-
-        return res.status(201).json({ review });
+        return review;
     } catch (error) {
-        return res.status(500).json({ message: 'Error creating review: ' + error.message });
+        console.error('Error creating review:', error);
+        return res.status(500).json({ message: 'Error creating review: ' + (error.message || 'Unknown error') });
     }
 };
 
-const editReview = async (req, res) => {
+
+export const editReview = async (req, res) => {
     try {
         const { reviewId, ...editReviewData } = req.body;
         const userId = req.user.user_id;
@@ -43,11 +36,11 @@ const editReview = async (req, res) => {
     }
 }
 
-const deleteReview = async (req, res) => {
+export const deleteReview = async (req, res) => {
     try {
         const reviewId = req.params;
         const review = await Review.findByPk(reviewId);
-        await user.destroy();
+        await User.destroy();
         return true;
     } catch (error) {
         throw new Error('Error deleting review: ' + error.message);

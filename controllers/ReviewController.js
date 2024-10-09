@@ -1,7 +1,7 @@
 import models from '../index.js';
 import ReviewService from '../service/ReviewService.js';
 
-const { Review } = models;
+const { Review, User, Property } = models;
 
 export const getAllReview = async () => {
     try {
@@ -22,15 +22,32 @@ export const getReviewById = async (userId, reviewId) => {
 }
 
 export const createReview = async (req, res) => {
-    try {
-        const { userId, ...reviewData } = req.body;
-        const review = await Review.create({ ...reviewData, userId });
+    try{
+        const { user_id, property_id, ...reviewData } = req.body;
+
+        console.log("*******" + req.body);
+
+        const property = await Property.findByPk(property_id);
+        const user = await User.findByPk(user_id);
+
+        if (!property) {
+            return res.status(404).json({ message: 'Property not found' });
+        }
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (String(req.user.user_id) !== String(user_id)) {
+            return res.status(403).json({ message: 'You can only create a review using your own user ID' });
+        }
+
+        const review = await ReviewService.createReview(req.body);
         return res.status(201).json({ review });
     } catch (error) {
         return res.status(500).json({ message: 'Error creating review: ' + error.message });
     }
 };
-
 
 export const editReview = async (req, res) => {
     try {
