@@ -48,12 +48,32 @@ export const createReview = async (req, res) => {
 
 export const editReview = async (req, res) => {
     try {
-        if (String(req.user.user_id) != String(req.body.user_id)) {
+        const review = await Review.findOne({ 
+            where: { 
+                user_id: req.user.user_id, 
+                property_id: req.body.property_id 
+            }
+        });
+
+        if (!review) {
+            return res.status(404).json({ message: 'Review not found' });
+        }
+
+        if (String(req.user.user_id) !== String(review.user_id)) {
             return res.status(403).json({ message: 'You can only edit your own review' });
         }
-        const editReview = await ReviewService.editReview(req.body);
-        return res.status(200).json({ message: editReview });
-    } catch {
+
+        const updatedData = {
+            rating: req.body.rating,
+            comment: req.body.comment
+        };
+
+        await ReviewService.editReview(review.review_id, updatedData);
+
+        const updatedReview = await Review.findOne({ where: { review_id: review.review_id } });
+
+        return res.status(200).json({ review: updatedReview });
+    } catch (error) {
         return res.status(500).json({ message: error.message });
     }
 };

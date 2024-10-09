@@ -13,20 +13,11 @@ export const createReview = async (reviewData) => {
 };
 
 
-export const editReview = async (editReviewId) => {
+export const editReview = async (reviewId, updatedData) => {
     try {
-        const existingReview = await Review.findOne({ where: { id: editReviewId } });
-
-        if (!existingReview) {
-            return res.status(404).json({ message: 'Review not found' });
-        }
-
-        await Review.update(editReviewId, { where: { id: editReviewId } });
-
-        const updatedReview = await Review.findOne({ where: { id: editReviewId } });
-        return res.status(200).json({ review: updatedReview });
+        await Review.update(updatedData, { where: { review_id: reviewId } });
     } catch (error) {
-        return res.status(500).json({ message: 'Error editing review: ' + error.message });
+        throw new Error('Error editing review: ' + error.message);
     }
 }
 
