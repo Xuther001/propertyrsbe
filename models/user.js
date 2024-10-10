@@ -1,4 +1,5 @@
 import { DataTypes } from 'sequelize';
+import bcrypt from 'bcrypt';
 import UserProperty from './UserProperty.js';
 
 export default (sequelize) => {
@@ -37,11 +38,26 @@ export default (sequelize) => {
     timestamps: true,
     underscored: true,
     tableName: 'users',
+
+    hooks: {
+      beforeCreate: async (user) => {
+        if (user.password) {
+          const hashedPassword = await bcrypt.hash(user.password, 10);
+          user.password = hashedPassword;
+        }
+      },
+      beforeUpdate: async (user) => {
+        if (user.password) {
+          const hashedPassword = await bcrypt.hash(user.password, 10);
+          user.password = hashedPassword;
+        }
+      },
+    },
   });
 
   User.associate = (models) => {
     User.belongsToMany(models.Property, {
-      through: UserProperty, // Use imported UserProperty model here
+      through: UserProperty,
       foreignKey: 'user_id',
       otherKey: 'property_id',
       onDelete: 'CASCADE',
