@@ -1,10 +1,18 @@
 import models from '../index.js';
 import ListingService from '../service/ListingService.js';
 
-const { Listing } = models;
+const { Listing, UserProperty, Property } = models;
 
 export const createListing = async (req, res) => {
     try {
+
+        const userProperty = await UserProperty.findOne({
+            where: {property_id: req.body.property_id }
+        })
+
+        if (String(req.user.user_id) != String(userProperty.user_id)) {
+            return res.status(403).json({ message: 'User does not own this property' });
+        }
         const listingData = req.body;
 
         const listing = await ListingService.createListing(listingData);
