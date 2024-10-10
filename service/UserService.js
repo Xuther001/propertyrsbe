@@ -56,7 +56,8 @@ const updateUser = async (userId, updateData) => {
             return null;
         }
         const updatedUser = await user.update(updateData);
-        return updatedUser;
+        const token = generateToken(updatedUser);
+        return { user: updatedUser, token };
     } catch (error) {
         throw new Error('Error updating user: ' + error.message);
     }
@@ -81,7 +82,8 @@ const patchUser = async (userId, patchData) => {
             return null;
         }
         const patchedUser = await user.update(patchData, { fields: Object.keys(patchData) });
-        return patchedUser;
+        const token = generateToken(patchedUser);
+        return { user: patchedUser, token };
     } catch (error) {
         throw new Error('Error patching user: ' + error.message);
     }
