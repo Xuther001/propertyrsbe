@@ -1,5 +1,6 @@
 import models from '../index.js';
 import { generateToken } from '../util/JwtUtil.js';
+import { Op } from 'sequelize';
 
 const { User } = models;
 
@@ -37,6 +38,19 @@ const getUserById = async (userId) => {
 
 const updateUser = async (userId, updateData) => {
     try {
+
+        const { username, email } = updateData;
+
+        const { existingUserByUsername, existingUserByEmail } = await checkUserExists(username, email, userId);
+
+        if (existingUserByUsername) {
+            throw new Error('Username is already taken');
+        }
+        
+        if (existingUserByEmail) {
+            throw new Error('Email is already in use');
+        }
+
         const user = await User.findByPk(userId);
         if (!user) {
             return null;
@@ -50,6 +64,18 @@ const updateUser = async (userId, updateData) => {
 
 const patchUser = async (userId, patchData) => {
     try {
+
+        const { username, email } = patchData;
+
+        const { existingUserByUsername, existingUserByEmail } = await checkUserExists(username, email, userId);
+
+        if (existingUserByUsername) {
+            throw new Error('Username is already taken');
+        }
+        
+        if (existingUserByEmail) {
+            throw new Error('Email is already in use');
+        }
         const user = await User.findByPk(userId);
         if (!user) {
             return null;
@@ -71,6 +97,21 @@ const deleteUser = async (userId) => {
     } catch (error) {
         throw new Error('Error deleting user: ' + error.message);
     }
+};
+
+const checkUserExists = async (username, email, userId) => {
+    const existingUserByUsername = await User.findOne({
+        where: { username, user_id: { [Op.ne]: userId } }
+    });
+
+    const existingUserByEmail = await User.findOne({
+        where: { email, user_id: { [Op.ne]: userId } }
+    });
+
+    return {
+        existingUserByUsername,
+        existingUserByEmail,
+    };
 };
 
 export default {
