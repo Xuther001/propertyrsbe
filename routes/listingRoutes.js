@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.post('/', authenticateToken, createListing);
 router.get('/', getAllListings);
-router.get('/:listingId', authenticateToken, getListingById);
-router.put('/:listingId', authenticateToken, updateListing);
-router.delete('/:listingId', authenticateToken, deleteListing);
+router.get('/:id', authenticateToken, getListingById);
+router.put('/:id', authenticateToken, updateListing);
+router.delete('/:id', authenticateToken, deleteListing);
 
 export default router;
