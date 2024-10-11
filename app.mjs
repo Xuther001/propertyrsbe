@@ -7,6 +7,7 @@ import listingRoutes from './routes/listingRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 import propertyRoutes from './routes/propertyRoutes.js';
 import favoriteRoutes from './routes/favoriteRoutes.js';
+import propertyImageRoutes from './routes/propertyImageRoutes.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/listing', listingRoutes);
 app.use('/api/property', propertyRoutes);
+app.use('/api/propertyimages', propertyImageRoutes);
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
