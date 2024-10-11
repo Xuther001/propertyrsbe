@@ -5,16 +5,10 @@ const { User, Property, Listing, Favorite } = models;
 
 export const getAllFavorites = async (req, res) => {
     try {
-
-        // const favorite = await Favorite.findOne({
-        //     where: { }
-        // })
-
-        if (String(req.user.user_id) != String(req.body.user_id)) {
-            return res.status(403).json({ message: 'Request user_id does not match with favorite user_id' });
-        }
-
         const favorites = await FavoriteService.getAllFavorites(req.user.user_id);
+        if (!favorites) {
+            return res.status(404).json({ message: 'No favorites found for this user.' });
+        }
         return res.status(200).json({ favorites });
     } catch (error) {
         return res.status(500).json({ message: error.message });
@@ -26,6 +20,9 @@ export const getFavoriteById = async (req, res) => {
         const favorite = await FavoriteService.getFavoriteById(req.user.user_id, req.params.id);
         if (!favorite) {
             return res.status(404).json({ message: 'Favorite not found' });
+        }
+        if (String(favorite.user_id) !== String(req.user.user_id)) {
+            return res.status(403).json({ message: 'You do not have permission to view this favorite' });
         }
         return res.status(200).json({ favorite });
     } catch (error) {
@@ -62,14 +59,13 @@ export const createFavorite = async (req, res) => {
 
 export const deleteFavorite = async (req, res) => {
     try {
-
-        //logic
-
         const favorite = await FavoriteService.getFavoriteById(req.user.user_id, req.params.id);
         if (!favorite) {
             return res.status(404).json({ message: 'Favorite not found' });
         }
-
+        if (String(favorite.user_id != String(req.user.user_id))) {
+            return res.status(403).json({ message: 'Request user_id does not match with favorite user_id' });
+        }
         await FavoriteService.deleteFavorite(favorite.favorite_id);
         return res.status(200).json({ message: 'Favorite deleted successfully' });
     } catch (error) {
