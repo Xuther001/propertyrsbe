@@ -1,10 +1,19 @@
 import models from '../index.js';
 import FavoriteService from '../service/FavoriteService.js';
 
-const { User, Property, Listing } = models;
+const { User, Property, Listing, Favorite } = models;
 
 export const getAllFavorites = async (req, res) => {
     try {
+
+        // const favorite = await Favorite.findOne({
+        //     where: { }
+        // })
+
+        if (String(req.user.user_id) != String(req.body.user_id)) {
+            return res.status(403).json({ message: 'Request user_id does not match with favorite user_id' });
+        }
+
         const favorites = await FavoriteService.getAllFavorites(req.user.user_id);
         return res.status(200).json({ favorites });
     } catch (error) {
@@ -28,6 +37,10 @@ export const createFavorite = async (req, res) => {
     try {
         const { user_id, property_id, listing_id } = req.body;
 
+        if (String(req.user.user_id) != String(user_id)) {
+            return res.status(403).json({ message: 'Request user_id does not match with favorite user_id' });
+        }
+
         const user = await User.findByPk(user_id);
         const property = await Property.findByPk(property_id);
         const listing = await Listing.findByPk(listing_id);
@@ -49,6 +62,9 @@ export const createFavorite = async (req, res) => {
 
 export const deleteFavorite = async (req, res) => {
     try {
+
+        //logic
+
         const favorite = await FavoriteService.getFavoriteById(req.user.user_id, req.params.id);
         if (!favorite) {
             return res.status(404).json({ message: 'Favorite not found' });
