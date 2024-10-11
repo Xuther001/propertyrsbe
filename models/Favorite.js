@@ -2,6 +2,11 @@ import { DataTypes } from 'sequelize';
 
 export default (sequelize) => {
   const Favorite = sequelize.define('Favorite', {
+    favorite_id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
     user_id: {
       type: DataTypes.UUID,
       allowNull: false,
@@ -9,7 +14,6 @@ export default (sequelize) => {
         model: 'users',
         key: 'user_id',
       },
-      primaryKey: true,
     },
     property_id: {
       type: DataTypes.UUID,
@@ -18,7 +22,6 @@ export default (sequelize) => {
         model: 'properties',
         key: 'property_id',
       },
-      primaryKey: false,
     },
     listing_id: {
       type: DataTypes.UUID,
@@ -27,7 +30,6 @@ export default (sequelize) => {
         model: 'listings',
         key: 'listing_id',
       },
-      primaryKey: false,
     },
     createdAt: {
       type: DataTypes.DATE,

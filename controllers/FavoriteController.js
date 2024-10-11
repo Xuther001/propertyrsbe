@@ -34,13 +34,13 @@ export const createFavorite = async (req, res) => {
     try {
         const { user_id, property_id, listing_id } = req.body;
 
-        if (String(req.user.user_id) != String(user_id)) {
+        if (String(req.user.user_id) !== String(user_id)) {
             return res.status(403).json({ message: 'Request user_id does not match with favorite user_id' });
         }
 
         const user = await User.findByPk(user_id);
-        const property = await Property.findByPk(property_id);
-        const listing = await Listing.findByPk(listing_id);
+        const property = property_id ? await Property.findByPk(property_id) : null;
+        const listing = listing_id ? await Listing.findByPk(listing_id) : null;
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
@@ -48,6 +48,18 @@ export const createFavorite = async (req, res) => {
 
         if (!property && !listing) {
             return res.status(404).json({ message: 'Either property or listing must exist' });
+        }
+
+        const existingFavorite = await Favorite.findOne({
+            where: {
+                user_id: user_id,
+                property_id: property_id || null,
+                listing_id: listing_id || null
+            }
+        });
+
+        if (existingFavorite) {
+            return res.status(409).json({ message: 'Favorite already exists' });
         }
 
         const favorite = await FavoriteService.createFavorite(req.body);
