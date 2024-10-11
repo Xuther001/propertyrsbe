@@ -1,4 +1,3 @@
-// models/Favorite.js
 import { DataTypes } from 'sequelize';
 
 export default (sequelize) => {
@@ -14,21 +13,41 @@ export default (sequelize) => {
     },
     property_id: {
       type: DataTypes.UUID,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: 'properties',
         key: 'property_id',
       },
-      primaryKey: true,
+      primaryKey: false,
+    },
+    listing_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: {
+        model: 'listings',
+        key: 'listing_id',
+      },
+      primaryKey: false,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
   }, {
-    timestamps: false,
+    timestamps: true,
     tableName: 'favorites',
   });
 
   Favorite.associate = (models) => {
     Favorite.belongsTo(models.User, { foreignKey: 'user_id' });
     Favorite.belongsTo(models.Property, { foreignKey: 'property_id' });
+    Favorite.belongsTo(models.Listing, { foreignKey: 'listing_id' });
   };
 
   return Favorite;
