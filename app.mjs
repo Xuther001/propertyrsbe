@@ -6,6 +6,7 @@ import userRoutes from './routes/userRoutes.js';
 import listingRoutes from './routes/listingRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 import propertyRoutes from './routes/propertyRoutes.js';
+import favoriteRoutes from './routes/favoriteRoutes.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -25,6 +26,7 @@ sequelize.sync({ alter: true })
     console.error('Error creating tables:', error);
   });
 
+app.use('/api/favorites', favoriteRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/listing', listingRoutes);
