@@ -3,6 +3,19 @@ import UserService from '../service/UserService.js';
 
 const { User } = models;
 
+export const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Email and password are required' });
+    }
+    try {
+        const { user, token } = await UserService.loginUser(email, password);
+        return res.status(200).json({ message: 'Login successful', user, token });
+    } catch (error) {
+        return res.status(401).json({ message: error.message });
+    }
+};
+
 export const createUser = async (req, res) => {
     try {
         const { username, email } = req.body;
@@ -109,4 +122,4 @@ export const deleteUser = async (req, res) => {
     }
 };
 
-export default { createUser, getAllUsers, getUserById, updateUser, patchUser, deleteUser };
+export default { loginUser, createUser, getAllUsers, getUserById, updateUser, patchUser, deleteUser };

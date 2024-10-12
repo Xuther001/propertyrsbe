@@ -1,8 +1,29 @@
 import models from '../index.js';
 import { generateToken } from '../util/JwtUtil.js';
+import bcrypt from 'bcrypt';
 import { Op } from 'sequelize';
 
 const { User } = models;
+
+const loginUser = async (email, password) => {
+    try {
+        const user = await User.findOne({ where: { email } });
+
+        if (!user) {
+            throw new Error('Invalid email or password');
+        }
+
+        const passwordMatch = await bcrypt.compare(password, user.password);
+        if (!passwordMatch) {
+            throw new Error('Invalid email or password');
+        }
+
+        const token = generateToken(user);
+        return { user, token };
+    } catch (error) {
+        throw new Error('Login failed: ' + error.message);
+    }
+};
 
 const createUser = async (userData) => {
     try {
@@ -117,6 +138,7 @@ const checkUserExists = async (username, email, userId) => {
 };
 
 export default {
+    loginUser,
     createUser,
     getAllUsers,
     getUserById,
