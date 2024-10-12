@@ -8,8 +8,8 @@ const addPropertyImages = async (propertyId, imageFiles) => {
 
     const imagesToCreate = imageFiles.map((file) => ({
         property_id: propertyId,
-        image_url: file.url,
-        image_type: file.type || 'gallery',
+        image_url: file.Location,
+        image_type: file.mimetype || 'gallery',
     }));
 
     const addedImages = await PropertyImage.bulkCreate(imagesToCreate);
