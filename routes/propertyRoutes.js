@@ -3,6 +3,7 @@ import multer from 'multer';
 import AWS from 'aws-sdk';
 import { authenticateToken } from '../middleware/auth.js';
 import { createProperty, getAllProperties, getPropertyById, updateProperty, deleteProperty } from '../controllers/PropertyController.js';
+import PropertyImageService from '../service/PropertyImageService.js';
 
 const router = express.Router();
 const upload = multer();
@@ -27,7 +28,7 @@ router.post('/:propertyId/images', authenticateToken, upload.array('images'), as
     try {
       const uploadPromises = req.files.map((file) => {
         const params = {
-          Bucket: 'YOUR_BUCKET_NAME',
+          Bucket: 'propertyrs',
           Key: `images/${Date.now()}_${file.originalname}`,
           Body: file.buffer,
           ContentType: file.mimetype,
