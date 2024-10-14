@@ -14,13 +14,13 @@ const Favorite = initFavoriteModel(sequelize);
 const Review = initReviewModel(sequelize);
 const PropertyImage = initPropertyImageModel(sequelize);
 
-User.associate({ Property, Review, Favorite, UserProperty });
-Property.associate({ User, Review, Listing, UserProperty });
-Listing.associate({ Property });
-Review.associate({ User, Property });
-Favorite.associate({ User, Property, Listing });
-PropertyImage.associate({ Property });
-
 const models = { User, Property, Listing, Favorite, Review, PropertyImage, UserProperty };
+
+User.associate(models);
+Property.associate(models);
+Listing.associate(models);
+Review.associate(models);
+Favorite.associate(models);
+PropertyImage.associate(models);
 
 export default models;

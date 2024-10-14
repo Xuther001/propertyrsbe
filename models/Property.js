@@ -78,6 +78,12 @@ export default (sequelize) => {
       foreignKey: 'property_id',
       onDelete: 'CASCADE',
     });
+
+    Property.hasMany(models.PropertyImage, {
+      foreignKey: 'property_id', 
+      as: 'images',
+      onDelete: 'CASCADE',
+    });
   };
 
   return Property;

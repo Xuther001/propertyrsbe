@@ -13,17 +13,31 @@ const createProperty = async (propertyData, userId) => {
 };
 
 const getAllProperties = async () => {
-    return await Property.findAll();
+    return await Property.findAll({
+        include: {
+            model: models.PropertyImage,
+            as: 'images',
+            attributes: ['image_url']
+        },
+    });
 };
 
 const getPropertyById = async (userId, propertyId) => {
     const ownership = await UserProperty.findOne({
-        where: { user_id: userId, property_id: propertyId }
+        where: { user_id: userId, property_id: propertyId },
     });
 
     if (!ownership) throw new Error('User does not own this property');
 
-    const property = await Property.findByPk(propertyId);
+    const property = await Property.findOne({
+        where: { property_id: propertyId },
+        include: {
+            model: models.PropertyImage,
+            as: 'images',
+            attributes: ['image_url'],
+        },
+    });
+
     if (!property) throw new Error('Property not found');
 
     return property;
