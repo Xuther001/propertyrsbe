@@ -4,7 +4,7 @@ Backend (PropertyrsBE) Setup
 
 1. Clone this repository: git clone https://github.com/Xuther001/propertyrsbe.git
 
-2. Create a .env file in propertyrsbe/util/
+2. Create a .env file in propertyrsbe/util/ <br>
    Edit .env like so:
 <pre><code>
 JWT_SECRET=your-jwt-secret-key
