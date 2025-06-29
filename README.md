@@ -81,7 +81,7 @@ CREATE TABLE reviews (
 </code></pre>
 
 5. Using whatever methods you like, inject the following addresses into Redis Database after you've created the tables above:<br>
-</code></pre>
+<pre><code>
 {
   "address": "123 Maple Avenue",
   "city": "Riverdale",
@@ -140,6 +140,7 @@ CREATE TABLE reviews (
 </code></pre>
 
 6. Using whatever methods you like, inject the following properties into Redis Database after you've created the tables above:<br>
+<pre><code>
 {
     "property": {
         "property_id": "bc71df42-75fa-49d8-ac3c-eb0796d4e909",
