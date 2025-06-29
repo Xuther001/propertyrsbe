@@ -234,7 +234,7 @@ CREATE TABLE reviews (
 </code></pre>
 
 7. Using whatever methods you like, inject the following listings into Redis Database after you've created the tables above:<br>
-</code></pre>
+<pre><code>
 {
   "price": 850000.00,
   "is_for_sale": true,
