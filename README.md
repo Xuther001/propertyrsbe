@@ -80,4 +80,4 @@ CREATE TABLE reviews (
 );
 </code></pre>
 
-5. Finally, access the website through your aws provided URL.
+5. Finally, access the website through your aws provided URL. Create an account and start adding properties and list them for sale or for rent!
