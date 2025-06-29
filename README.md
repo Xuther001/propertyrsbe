@@ -16,7 +16,7 @@ AWS_S3_BUCKET_NAME=your-bucket-name
 
 3. Deploy to AWS
 
-4. Create Tables on Redis<br>
+4. Create Tables on Amazon RDS<br>
 
 Create the Users Table
 <pre><code>
@@ -84,7 +84,7 @@ CREATE TABLE reviews (
 
 # (Optional) You can create an account and start adding properties and list them or you can inject sample data from below
 
-Using whatever methods you like, inject the following addresses into Redis Database after you've created the tables above:<br>
+Using whatever methods you like, inject the following addresses into Amazon RDS Database after you've created the tables above:<br>
 <pre><code>
 {
   "address": "123 Maple Avenue",
@@ -143,7 +143,7 @@ Using whatever methods you like, inject the following addresses into Redis Datab
 }
 </code></pre>
 
-Using whatever methods you like, inject the following properties into Redis Database after you've created the tables above:<br>
+Using whatever methods you like, inject the following properties into Amazon RDS Database after you've created the tables above:<br>
 <pre><code>
 {
     "property": {
@@ -237,7 +237,7 @@ Using whatever methods you like, inject the following properties into Redis Data
 }
 </code></pre>
 
-Using whatever methods you like, inject the following listings into Redis Database after you've created the tables above:<br>
+Using whatever methods you like, inject the following listings into Amazon RDS Database after you've created the tables above:<br>
 <pre><code>
 {
   "price": 850000.00,
