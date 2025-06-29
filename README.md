@@ -80,7 +80,9 @@ CREATE TABLE reviews (
 );
 </code></pre>
 
-5. Using whatever methods you like, inject the following addresses into Redis Database after you've created the tables above:<br>
+# (Optional) You can create an account and start adding properties and list them or you can inject sample data from below
+
+Using whatever methods you like, inject the following addresses into Redis Database after you've created the tables above:<br>
 <pre><code>
 {
   "address": "123 Maple Avenue",
@@ -139,7 +141,7 @@ CREATE TABLE reviews (
 }
 </code></pre>
 
-6. Using whatever methods you like, inject the following properties into Redis Database after you've created the tables above:<br>
+Using whatever methods you like, inject the following properties into Redis Database after you've created the tables above:<br>
 <pre><code>
 {
     "property": {
@@ -233,7 +235,7 @@ CREATE TABLE reviews (
 }
 </code></pre>
 
-7. Using whatever methods you like, inject the following listings into Redis Database after you've created the tables above:<br>
+Using whatever methods you like, inject the following listings into Redis Database after you've created the tables above:<br>
 <pre><code>
 {
   "price": 850000.00,
