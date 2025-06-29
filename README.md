@@ -14,7 +14,7 @@ AWS_REGION=your-aws-region
 AWS_S3_BUCKET_NAME=your-bucket-name
 </code></pre>
 
-3. Create Tables on Redis
+3. Create Tables on Redis<br>
 Create the Users Table
 <pre><code>
 CREATE TABLE users (
