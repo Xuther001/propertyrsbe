@@ -80,6 +80,8 @@ CREATE TABLE reviews (
 );
 </code></pre>
 
+5. Finally, access the website through your aws provided URL.
+
 # (Optional) You can create an account and start adding properties and list them or you can inject sample data from below
 
 Using whatever methods you like, inject the following addresses into Redis Database after you've created the tables above:<br>
