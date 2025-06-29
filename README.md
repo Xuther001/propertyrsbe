@@ -72,6 +72,10 @@ CREATE TABLE reviews (
     user_id UUID REFERENCES users(user_id) ON DELETE CASCADE,
     property_id UUID REFERENCES properties(property_id) ON DELETE CASCADE,
     rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 </code></pre>
 
 3. Finally deploy to AWS
