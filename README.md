@@ -231,6 +231,7 @@ CREATE TABLE reviews (
         "createdAt": "2024-10-11T16:45:36.523Z"
     }
 }
+</code></pre>
 
 7. Using whatever methods you like, inject the following listings into Redis Database after you've created the tables above:<br>
 </code></pre>
